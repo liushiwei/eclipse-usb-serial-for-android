@@ -339,6 +339,10 @@ public class CdcAcmSerialDriver implements UsbSerialDriver {
                 new int[] {
                     UsbId.VAN_OOIJEN_TECH_TEENSYDUINO_SERIAL,
                 });
+        supportedDevices.put(Integer.valueOf(UsbId.STM32F4_DCD_VID),
+                new int[] {
+                    UsbId.STM32F4_DCD_PID,
+                });
         supportedDevices.put(Integer.valueOf(UsbId.VENDOR_ATMEL),
                 new int[] {
                     UsbId.ATMEL_LUFA_CDC_DEMO_APP,

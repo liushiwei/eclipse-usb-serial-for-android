@@ -21,6 +21,10 @@
 
 package com.hoho.android.usbserial.examples;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,16 +32,16 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.util.HexDump;
 import com.hoho.android.usbserial.util.SerialInputOutputManager;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Monitors a single {@link UsbSerialPort} instance, showing all data
@@ -64,6 +68,7 @@ public class SerialConsoleActivity extends Activity {
     private TextView mTitleTextView;
     private TextView mDumpTextView;
     private ScrollView mScrollView;
+    private Button mSend;
 
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
@@ -95,6 +100,24 @@ public class SerialConsoleActivity extends Activity {
         mTitleTextView = (TextView) findViewById(R.id.demoTitle);
         mDumpTextView = (TextView) findViewById(R.id.consoleText);
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
+        mSend = (Button)findViewById(R.id.send);
+        mSend.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                EditText text = (EditText)findViewById(R.id.editText1);
+                String message = text.getText().toString();
+                if(!message.isEmpty()&&sPort!=null){
+                    try {
+                        sPort.write(message.getBytes(), 100);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                
+            }
+        });
     }
 
     @Override
